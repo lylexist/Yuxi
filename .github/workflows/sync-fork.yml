@@ -1,0 +1,19 @@
+name: Sync fork
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # 每天 UTC 03:00
+  workflow_dispatch:     # 支持手动运行
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: gh repo sync "$REPO" --source xerrors/Yuxi --branch main
